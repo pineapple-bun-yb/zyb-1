@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Matching</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .calculator {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.5em;
+        }
+
+        .calculator table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calculator table td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+
+        .calculator input[type="number"],
+        .calculator select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .calculator .result {
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .calculator button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .calculator button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Video-Matching</h2>
+
+        <table>
+            <!-- 第一个计算 -->
+            <tr>
+                <td><label for="input1">视频总个数：</label></td>
+                <td><input type="number" id="input1" placeholder="输入数字" min="1" oninput="calculate()"></td>
+                <td>
+                    <select id="multiplier1" onchange="calculate()">
+                        <option value="1">1倍</option>
+                        <option value="2">2倍</option>
+                        <option value="3">3倍</option>
+                        <option value="4">4倍</option>
+                    </select>
+                </td>
+                <td><span class="result" id="result1">0</span></td>
+            </tr>
+
+            <!-- 第二个计算 -->
+            <tr>
+                <td><label for="input2">视频总倍数/每组视频数量：</label></td>
+                <td colspan="2"><input type="number" id="input2" placeholder="每组视频数量" min="1" oninput="calculate()"></td>
+                <td><span class="result" id="result2">0</span></td>
+            </tr>
+
+            <!-- 第三个计算 -->
+            <tr>
+                <td><label for="input3">视频组数*账户数量：</label></td>
+                <td colspan="2"><input type="number" id="input3" placeholder="账户数量" min="1" oninput="calculate()"></td>
+                <td><span class="result" id="result3">0</span></td>
+            </tr>
+
+            <!-- 第四个计算 -->
+            <tr>
+                <td><label for="input4-1">视频组数*每组视频数量：</label></td>
+                <td><input type="number" id="input4-1" placeholder="视频组数" min="1" oninput="calculate()"></td>
+                <td><input type="number" id="input4-2" placeholder="每组视频数量" min="1" oninput="calculate()"></td>
+                <td><span class="result" id="result4">0</span></td>
+            </tr>
+
+            <!-- 第五个计算 -->
+            <tr>
+                <td><label for="input4-4">视频组数/账户数量：</label></td>
+                <td colspan="2"><input type="number" id="input4-4" placeholder="账户数量" min="1" oninput="calculate()"></td>
+                <td><span class="result" id="result5">0</span></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculate() {
+            // 第一个计算: 输入数字 * 倍数
+            var input1 = parseFloat(document.getElementById('input1').value);
+            var multiplier1 = parseFloat(document.getElementById('multiplier1').value);
+            var result1 = (isNaN(input1) ? 0 : input1 * multiplier1);
+            document.getElementById('result1').innerText = result1;
+
+            // 第二个计算: 第一个结果 / 第二个输入
+            var input2 = parseFloat(document.getElementById('input2').value);
+            var result2 = (isNaN(input2) || input2 === 0) ? 0 : result1 / input2;
+            document.getElementById('result2').innerText = result2.toFixed(2);
+
+            // 第三个计算: 第二个结果 * 第三个输入
+            var input3 = parseFloat(document.getElementById('input3').value);
+            var result3 = (isNaN(input3) || result2 === 0) ? 0 : result2 * input3;
+            document.getElementById('result3').innerText = result3.toFixed(2);
+
+            // 第四个计算: 第四组输入相乘
+            var input4_1 = parseFloat(document.getElementById('input4-1').value);
+            var input4_2 = parseFloat(document.getElementById('input4-2').value);
+            var result4 = (isNaN(input4_1) || isNaN(input4_2)) ? 0 : input4_1 * input4_2;
+            document.getElementById('result4').innerText = result4;
+
+            // 第五个计算: 第四组输入相除法
+            var input4_4 = parseFloat(document.getElementById('input4-4').value);
+            var result5 = (isNaN(result2) || isNaN(input4_4) || input4_4 === 0) ? 0 : result2 / input4_4;
+            document.getElementById('result5').innerText = result5.toFixed(2);
+        }
+    </script>
+</body>
+</html>
